@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.14/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.14",
+  "version": "1.0.0",
+  "id": "$CLIENT_ID",
+  "packageName": "io.gbsolutions.whatever",
+  "developer": {
+    "name": "$BOT_NAME",
+    "websiteUrl": "https://www.microsoft.com",
+    "privacyUrl": "https://www.teams.com/privacy",
+    "termsOfUseUrl": "https://www.teams.com/termsofuser"
+  },
+  "icons": {
+    "color": "icon-color.png",
+    "outline": "icon-outline.png"
+  },
+  "name": {
+    "short": "$BOT_NAME",
+    "full": "$BOT_NAME"
+  },
+  "description": {
+    "short": "$BOT_NAME",
+    "full": "$BOT_NAME"
+  },
+  "accentColor": "#FFFFFF",
+  "bots": [
+    {
+      "botId": "$CLIENT_ID",
+      "scopes": [
+        "groupchat",
+        "team",
+        "personal"
+      ],
+      "isNotificationOnly": false,
+      "supportsCalling": false,
+      "supportsVideo": false,
+      "supportsFiles": false
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": []
+}
