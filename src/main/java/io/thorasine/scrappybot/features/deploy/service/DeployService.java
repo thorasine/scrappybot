@@ -1,33 +1,71 @@
 package io.thorasine.scrappybot.features.deploy.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
-import io.thorasine.scrappybot.features.common.enums.Command;
+import com.microsoft.bot.schema.ActionTypes;
+import com.microsoft.bot.schema.CardAction;
+import com.microsoft.bot.schema.HeroCard;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class DeployService {
 
-    public CompletableFuture<Void> deploy(TurnContext turnContext, Command command, CommandLine args) {
-        String branch;
-        String tag;
-        if (args.getArgList().isEmpty()) {
-            //todo return card with clickable buttons [develop], [12.0.0], [abort], [cancel] etc
+    private static final String TAG_PATTERN = "[0-9]{1,2}\\.[0-9]\\.[0-9]";
+
+    public CompletableFuture<Void> deploy(TurnContext turnContext, CommandLine args) {
+        String branch = null;
+        if (ArrayUtils.isEmpty(args.getOptions())) {
+            HeroCard deployCards = createDeployCards();
+            return turnContext.sendActivity(MessageFactory.attachment(deployCards.toAttachment())).thenApply(sendResult -> null);
         }
         if (args.hasOption("abort")) {
-            //abort
+            return turnContext.sendActivity(MessageFactory.text("Aborting deploy.")).thenApply(sendResult -> null);
         }
         if (args.hasOption("branch")) {
             branch = args.getOptionValue("branch");
         }
         if (args.hasOption("tag")) {
-            tag = args.getOptionValue("tag");
+            branch = args.getOptionValue("tag");
         }
-        return turnContext.sendActivity(MessageFactory.text("WIP - not implemented")).thenApply(sendResult -> null);
+        String message = "Deploying " + branch + " to AWS.";
+        return turnContext.sendActivity(MessageFactory.text(message)).thenApply(sendResult -> null);
+    }
+
+    private HeroCard createDeployCards() {
+        HeroCard card = new HeroCard();
+        card.setTitle("Deploy");
+        card.setSubtitle("Select branch to deploy");
+        List<CardAction> buttons = new ArrayList<>();
+        buttons.add(createDeployCard("develop"));
+        buttons.add(createDeployCard("11.0.0", "release/11.0.0"));
+        buttons.add(createDeployCard("12.0.0", "release/12.0.0"));
+
+        CardAction deleteAction = new CardAction();
+        deleteAction.setType(ActionTypes.MESSAGE_BACK);
+        deleteAction.setTitle("Exit");
+        deleteAction.setText("exit");
+        buttons.add(deleteAction);
+        card.setButtons(buttons);
+        return card;
+    }
+
+    private CardAction createDeployCard(String branch) {
+        return createDeployCard(branch, branch);
+    }
+
+    private CardAction createDeployCard(String title, String branch) {
+        CardAction cardAction = new CardAction();
+        cardAction.setType(ActionTypes.MESSAGE_BACK);
+        cardAction.setTitle(title);
+        cardAction.setText("deploy -b " + branch);
+        return cardAction;
     }
 }

@@ -34,7 +34,7 @@ public enum Command {
 
     private static Options getDeployOptions() {
         Options options = new Options();
-        options.addOption("b", "branch", true, "Branch to deploy from.");
+        options.addOption("b", "branch", true, "Branch (or tag) to deploy from.");
         options.addOption("t", "tag", true, "Tag to deploy from.");
         options.addOption("a", "abort", false, "Abort current deploy.");
         return options;

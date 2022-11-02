@@ -38,6 +38,9 @@ public class IncomingMessageHandler extends ActivityHandler {
         if (args.length == 0) {
             return turnContext.sendActivity(MessageFactory.text("What?")).thenApply(sendResult -> null);
         }
+        if (args[0].equalsIgnoreCase("exit")) {
+            return cancelCardActivity(turnContext);
+        }
         return invokeFeature(turnContext, args);
     }
 
@@ -55,9 +58,13 @@ public class IncomingMessageHandler extends ActivityHandler {
         }
         return switch (command) {
             case HELP -> helpService.getAllCommandsHelp(turnContext, args);
-            case RELEASE -> releaseService.release(turnContext, command, args);
-            case DEPLOY -> deployService.deploy(turnContext, command, args);
+            case RELEASE -> releaseService.release(turnContext, args);
+            case DEPLOY -> deployService.deploy(turnContext, args);
         };
+    }
+
+    private CompletableFuture<Void> cancelCardActivity(TurnContext turnContext) {
+        return turnContext.deleteActivity(turnContext.getActivity().getReplyToId());
     }
 
     private CompletableFuture<Void> getDefaultErrorMessage(TurnContext turnContext) {
