@@ -3,7 +3,7 @@
   "manifestVersion": "1.14",
   "version": "1.0.0",
   "id": "$CLIENT_ID",
-  "packageName": "io.gbsolutions.whatever",
+  "packageName": "io.group.something",
   "developer": {
     "name": "$BOT_NAME",
     "websiteUrl": "https://www.microsoft.com",
