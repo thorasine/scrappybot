@@ -7,11 +7,15 @@ import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.features.common.enums.Command;
+import io.thorasine.scrappybot.features.common.service.CommandLineService;
 import io.thorasine.scrappybot.features.deploy.service.DeployService;
 import io.thorasine.scrappybot.features.help.service.HelpService;
 import io.thorasine.scrappybot.features.release.service.ReleaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,8 @@ public class IncomingMessageHandler extends ActivityHandler {
     private final HelpService helpService;
     private final DeployService deployService;
     private final ReleaseService releaseService;
+    private final CommandLineParser commandLineParser;
+    private final CommandLineService commandLineService;
 
     @Override
     protected CompletableFuture<Void> onMessageActivity(TurnContext turnContext) {
@@ -35,10 +41,17 @@ public class IncomingMessageHandler extends ActivityHandler {
         return invokeFeature(turnContext, args);
     }
 
-    private CompletableFuture<Void> invokeFeature(TurnContext turnContext, String[] args) {
-        Command command = Command.from(args[0]);
+    private CompletableFuture<Void> invokeFeature(TurnContext turnContext, String[] stringArgs) {
+        Command command = Command.from(stringArgs[0]);
         if (null == command) {
             return getDefaultErrorMessage(turnContext);
+        }
+        CommandLine args;
+        try {
+            args = commandLineParser.parse(command.getOptions(), stringArgs);
+        } catch (ParseException exception) {
+            exception.printStackTrace();
+            return commandLineService.getCommandErrorHelpMessage(turnContext, exception, command);
         }
         return switch (command) {
             case HELP -> helpService.getAllCommandsHelp(turnContext);
