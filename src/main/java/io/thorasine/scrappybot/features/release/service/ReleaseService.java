@@ -16,6 +16,9 @@ public class ReleaseService {
     public CompletableFuture<Void> release(TurnContext turnContext, Command command, CommandLine args) {
         String branch = args.getOptionValue("branch");
         String tag = args.getOptionValue("tag");
+        if (args.hasOption("abort")) {
+            //abort
+        }
         return turnContext.sendActivity(MessageFactory.text("WIP - not implemented")).thenApply(sendResult -> null);
     }
 }

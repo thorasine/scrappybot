@@ -16,6 +16,12 @@ public class DeployService {
     public CompletableFuture<Void> deploy(TurnContext turnContext, Command command, CommandLine args) {
         String branch;
         String tag;
+        if (args.getArgList().isEmpty()) {
+            //todo return card with clickable buttons [develop], [12.0.0], [abort], [cancel] etc
+        }
+        if (args.hasOption("abort")) {
+            //abort
+        }
         if (args.hasOption("branch")) {
             branch = args.getOptionValue("branch");
         }

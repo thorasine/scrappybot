@@ -54,14 +54,14 @@ public class IncomingMessageHandler extends ActivityHandler {
             return commandLineService.getCommandErrorHelpMessage(turnContext, exception, command);
         }
         return switch (command) {
-            case HELP -> helpService.getAllCommandsHelp(turnContext);
+            case HELP -> helpService.getAllCommandsHelp(turnContext, args);
             case RELEASE -> releaseService.release(turnContext, command, args);
             case DEPLOY -> deployService.deploy(turnContext, command, args);
         };
     }
 
     private CompletableFuture<Void> getDefaultErrorMessage(TurnContext turnContext) {
-        String errorMessageTemplate = "Not a function: \"{0}\"\n for help, try \"help\"";
+        String errorMessageTemplate = "Not a command: \"{0}\", for help try \"help\"";
         String errorMessage = MessageFormat.format(errorMessageTemplate, turnContext.getActivity().getText());
         return turnContext.sendActivity(MessageFactory.text(errorMessage)).thenApply(sendResult -> null);
     }

@@ -10,6 +10,7 @@ import io.thorasine.scrappybot.features.common.enums.Command;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,37 +27,44 @@ public class CommandLineService {
         return turnContext.sendActivity(MessageFactory.text(exceptionMessage + helpMenu)).thenApply(sendResult -> null);
     }
 
-    public String getAllCommandsHelp() {
+    public String getAllCommandsHelp(boolean withArgs) {
         StringBuilder message = new StringBuilder();
-        message.append("# All commands\n");
-        message.append(LINE_BREAK);
         for (Command command : Command.values()) {
-            if (command == Command.HELP) {
-                continue;
-            }
-            message.append(getHelpMenu(command));
+            message.append(getCommandHelp(command, withArgs));
             message.append(EMPTY_LINE);
         }
         message.setLength(message.length() - 2);
-        return removeUsage(message.toString());
+        return message.toString();
+    }
+
+    public String getCommandHelp(Command command, boolean withArgs) {
+        StringBuilder message = new StringBuilder();
+        message.append("# ").append(StringUtils.capitalize(command.getValue())).append("\n");
+        message.append(command.getDescription()).append("\n");
+        message.append(getHelpMenu(command, withArgs));
+        return message.toString();
     }
 
     private String getHelpMenu(Command command) {
+        return getHelpMenu(command, true);
+    }
+
+    private String getHelpMenu(Command command, boolean withArgs) {
         StringWriter out = new StringWriter();
         PrintWriter pw = new PrintWriter(out);
         helpFormatter.printHelp(pw, 80, command.getValue(), "", command.getOptions(),
             helpFormatter.getLeftPadding(), helpFormatter.getDescPadding(), "", true);
         pw.flush();
-        return formatHelpMenuMessage(out.toString());
+        return formatHelpMenuMessage(out.toString(), withArgs);
     }
 
-    private String formatHelpMenuMessage(String response) {
+    private String formatHelpMenuMessage(String response, boolean withArgs) {
         String[] splits = response.split("\n");
         StringBuilder message = new StringBuilder();
         for (String split : splits) {
             if (!split.startsWith(" -")) {
                 message.append("## ").append(split).append("\n");
-            } else {
+            } else if (withArgs) {
                 message.append(split).append("\n");
             }
         }
