@@ -2,9 +2,7 @@ package io.thorasine.scrappybot.features.common;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.concurrent.CompletableFuture;
 
-import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.features.common.enums.Command;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +19,10 @@ public class CommandLineService {
     private final String EMPTY_LINE = "\u206E\n";
     private final String LINE_BREAK = "---\n";
 
-    public CompletableFuture<Void> getCommandErrorHelpMessage(TurnContext turnContext, ParseException exception, Command command) {
+    public String getCommandErrorHelpMessage(TurnContext turnContext, ParseException exception, Command command) {
         String exceptionMessage = exception.getMessage() + "\n";
         String helpMenu = getHelpMenu(command);
-        return turnContext.sendActivity(MessageFactory.text(exceptionMessage + helpMenu)).thenApply(sendResult -> null);
+        return exceptionMessage + helpMenu;
     }
 
     public String getAllCommandsHelp(boolean withArgs) {

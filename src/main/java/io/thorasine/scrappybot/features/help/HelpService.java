@@ -1,11 +1,9 @@
 package io.thorasine.scrappybot.features.help;
 
-import java.util.concurrent.CompletableFuture;
-
-import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
-import io.thorasine.scrappybot.features.common.enums.Command;
 import io.thorasine.scrappybot.features.common.CommandLineService;
+import io.thorasine.scrappybot.features.common.enums.Command;
+import io.thorasine.scrappybot.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
 import org.springframework.stereotype.Service;
@@ -14,9 +12,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class HelpService {
 
+    private final MessageService messageService;
     private final CommandLineService commandLineService;
 
-    public CompletableFuture<Void> getAllCommandsHelp(TurnContext turnContext, CommandLine args) {
+    public void getAllCommandsHelp(TurnContext turnContext, CommandLine args) {
         String message;
         if (args.hasOption("command")) {
             Command command = Command.from(args.getOptionValue("command"));
@@ -28,6 +27,6 @@ public class HelpService {
         } else {
             message = commandLineService.getAllCommandsHelp(true);
         }
-        return turnContext.sendActivity(MessageFactory.text(message)).thenApply(sendResult -> null);
+        messageService.sendMessage(turnContext, message);
     }
 }

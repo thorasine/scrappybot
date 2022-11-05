@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "bot.microsoft")
-public class MicrosoftAuthProperties {
+@ConfigurationProperties(prefix = "bot")
+public class BotProperties {
 
-    private String appId;
+    private String groupChat;
 
 }

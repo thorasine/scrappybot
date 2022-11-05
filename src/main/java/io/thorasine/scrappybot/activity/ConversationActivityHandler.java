@@ -6,12 +6,14 @@ import java.util.concurrent.CompletableFuture;
 import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
+import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ConversationReference;
-import io.thorasine.scrappybot.features.common.enums.Command;
 import io.thorasine.scrappybot.features.common.CommandLineService;
+import io.thorasine.scrappybot.features.common.enums.Command;
 import io.thorasine.scrappybot.features.deploy.DeployService;
 import io.thorasine.scrappybot.features.help.HelpService;
 import io.thorasine.scrappybot.features.release.ReleaseService;
+import io.thorasine.scrappybot.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
@@ -23,8 +25,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ConersationActivityHandler extends ActivityHandler {
+public class ConversationActivityHandler extends ActivityHandler {
 
+    private final MessageService messageService;
     private final HelpService helpService;
     private final DeployService deployService;
     private final ReleaseService releaseService;
@@ -34,13 +37,13 @@ public class ConersationActivityHandler extends ActivityHandler {
 
     @Override
     protected CompletableFuture<Void> onConversationUpdateActivity(TurnContext turnContext) {
-        ConversationReference conversationReference = turnContext.getActivity().getConversationReference();
-        conversationReferences.put(conversationReference.getUser().getId(), conversationReference);
+        addConversationReference(turnContext.getActivity());
         return super.onConversationUpdateActivity(turnContext);
     }
 
     @Override
     protected CompletableFuture<Void> onMessageActivity(TurnContext turnContext) {
+        addConversationReference(turnContext.getActivity());
         turnContext.getActivity().removeRecipientMention();
         log.info("From: {}, message: {}", turnContext.getActivity().getFrom().getName(), turnContext.getActivity().getText());
         String[] args = getArgs(turnContext.getActivity().getText());
@@ -50,22 +53,24 @@ public class ConersationActivityHandler extends ActivityHandler {
         if (args[0].equalsIgnoreCase("exit")) {
             return cancelCardActivity(turnContext);
         }
-        return invokeFeature(turnContext, args);
+        invokeFeature(turnContext, args);
+        return new CompletableFuture<>();
     }
 
-    private CompletableFuture<Void> invokeFeature(TurnContext turnContext, String[] stringArgs) {
+    private void invokeFeature(TurnContext turnContext, String[] stringArgs) {
         Command command = Command.from(stringArgs[0]);
         if (null == command) {
-            return getDefaultErrorMessage(turnContext);
+            sendDefaultErrorMessage(turnContext);
         }
         CommandLine args;
         try {
             args = commandLineParser.parse(command.getOptions(), stringArgs);
         } catch (ParseException exception) {
             exception.printStackTrace();
-            return commandLineService.getCommandErrorHelpMessage(turnContext, exception, command);
+            messageService.sendMessage(turnContext, commandLineService.getCommandErrorHelpMessage(turnContext, exception, command));
+            return;
         }
-        return switch (command) {
+        switch (command) {
             case HELP -> helpService.getAllCommandsHelp(turnContext, args);
             case RELEASE -> releaseService.release(turnContext, args);
             case DEPLOY -> deployService.deploy(turnContext, args);
@@ -76,10 +81,15 @@ public class ConersationActivityHandler extends ActivityHandler {
         return turnContext.deleteActivity(turnContext.getActivity().getReplyToId());
     }
 
-    private CompletableFuture<Void> getDefaultErrorMessage(TurnContext turnContext) {
+    private void addConversationReference(Activity activity) {
+        ConversationReference conversationReference = activity.getConversationReference();
+        conversationReferences.put(conversationReference.getUser().getId(), conversationReference);
+    }
+
+    private void sendDefaultErrorMessage(TurnContext turnContext) {
         String errorMessageTemplate = "Not a command: \"{0}\", for help try \"help\"";
         String errorMessage = MessageFormat.format(errorMessageTemplate, turnContext.getActivity().getText());
-        return turnContext.sendActivity(MessageFactory.text(errorMessage)).thenApply(sendResult -> null);
+        messageService.sendMessage(turnContext, errorMessage);
     }
 
     private String[] getArgs(String text) {
