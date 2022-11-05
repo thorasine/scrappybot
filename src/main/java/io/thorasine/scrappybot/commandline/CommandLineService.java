@@ -1,10 +1,12 @@
-package io.thorasine.scrappybot.commands.commandline;
+package io.thorasine.scrappybot.commandline;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import io.thorasine.scrappybot.commands.commandline.enums.Command;
+import io.thorasine.scrappybot.commandline.enums.Command;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
@@ -14,9 +16,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CommandLineService {
 
+    private static final String DELETE_CARD_COMMAND = "delete card";
+
+    private final CommandLineParser commandLineParser;
     private final HelpFormatter helpFormatter;
     private final String EMPTY_LINE = "\u206E\n";
     private final String LINE_BREAK = "---\n";
+
+    public CommandLine parse(Command command, String[] args) throws ParseException {
+        return commandLineParser.parse(command.getOptions(), args);
+    }
 
     public String getCommandErrorHelpMessage(ParseException exception, Command command) {
         String exceptionMessage = exception.getMessage() + "\n";
@@ -27,6 +36,9 @@ public class CommandLineService {
     public String getAllCommandsHelp(boolean withArgs) {
         StringBuilder message = new StringBuilder();
         for (Command command : Command.values()) {
+            if (command.isHidden()) {
+                continue;
+            }
             message.append(getCommandHelp(command, withArgs));
             message.append(EMPTY_LINE);
         }

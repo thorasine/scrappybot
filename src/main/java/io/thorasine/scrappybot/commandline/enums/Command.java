@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.commands.commandline.enums;
+package io.thorasine.scrappybot.commandline.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,12 +7,14 @@ import org.apache.commons.cli.Options;
 @Getter
 @RequiredArgsConstructor
 public enum Command {
-    HELP("help", getHelpOptions(), "Show help menu."),
-    RELEASE("release", getReleaseOptions(), "Release an app version through One Button Release job."),
-    DEPLOY("deploy", getDeployOptions(), "Deploy the selected branch or tag on AWS.");
+    HELP("help", getHelpOptions(), false, "Show help menu."),
+    RELEASE("release", getReleaseOptions(), false, "Release an app version through One Button Release job."),
+    DEPLOY("deploy", getDeployOptions(), false, "Deploy the selected branch or tag on AWS."),
+    DELETE("delete", getDeployOptions(), true, "Deletes last bot message (for example deploy card 'Exit'");
 
     private final String value;
     private final Options options;
+    private final boolean hidden;
     private final String description;
 
     public static Command from(String text) {
@@ -22,6 +24,12 @@ public enum Command {
             }
         }
         return null;
+    }
+
+    private static Options getHelpOptions() {
+        Options options = new Options();
+        options.addOption("c", "command", true, "Show command args.");
+        return options;
     }
 
     private static Options getReleaseOptions() {
@@ -40,9 +48,8 @@ public enum Command {
         return options;
     }
 
-    private static Options getHelpOptions() {
-        Options options = new Options();
-        options.addOption("c", "command", true, "Show command args.");
-        return options;
+    private static Options getDeleteOptions() {
+        return new Options();
     }
+
 }

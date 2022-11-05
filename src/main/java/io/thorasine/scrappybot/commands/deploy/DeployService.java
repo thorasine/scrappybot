@@ -60,7 +60,7 @@ public class DeployService {
         CardAction delete = new CardAction();
         delete.setType(ActionTypes.MESSAGE_BACK);
         delete.setTitle("Exit");
-        delete.setText("exit");
+        delete.setText("delete");
         buttons.add(delete);
 
         card.setButtons(buttons);

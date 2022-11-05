@@ -7,8 +7,8 @@ import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ConversationReference;
-import io.thorasine.scrappybot.commands.commandline.CommandLineService;
-import io.thorasine.scrappybot.commands.commandline.enums.Command;
+import io.thorasine.scrappybot.commandline.CommandLineService;
+import io.thorasine.scrappybot.commandline.enums.Command;
 import io.thorasine.scrappybot.commands.deploy.DeployService;
 import io.thorasine.scrappybot.commands.help.HelpService;
 import io.thorasine.scrappybot.commands.release.ReleaseService;
@@ -18,7 +18,6 @@ import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorExcept
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,6 @@ public class ConversationActivityHandler extends ActivityHandler {
     private final DeployService deployService;
     private final ReleaseService releaseService;
     private final ExceptionHandler exceptionHandler;
-    private final CommandLineParser commandLineParser;
     private final CommandLineService commandLineService;
     private final ConversationReferences conversationReferences;
 
@@ -55,7 +53,7 @@ public class ConversationActivityHandler extends ActivityHandler {
         if (args.length == 0) {
             throw new SystemRuntimeErrorException(turnContext, "What?");
         }
-        if (args[0].equalsIgnoreCase("exit")) {
+        if (turnContext.getActivity().getText().trim().equalsIgnoreCase("delete card")) {
             messageService.deleteMessage(turnContext);
             return;
         }
@@ -63,21 +61,21 @@ public class ConversationActivityHandler extends ActivityHandler {
     }
 
     private void invokeFeature(TurnContext turnContext, String[] stringArgs) {
+        CommandLine args;
         Command command = Command.from(stringArgs[0]);
         if (null == command) {
             throw new SystemRuntimeErrorException(turnContext, getCommandErrorMessage(turnContext));
         }
-        CommandLine args;
         try {
-            args = commandLineParser.parse(command.getOptions(), stringArgs);
+            args = commandLineService.parse(command, stringArgs);
         } catch (ParseException exception) {
-            exception.printStackTrace();
             throw new SystemRuntimeErrorException(turnContext, commandLineService.getCommandErrorHelpMessage(exception, command));
         }
         switch (command) {
             case HELP -> helpService.getAllCommandsHelp(turnContext, args);
             case RELEASE -> releaseService.release(turnContext, args);
             case DEPLOY -> deployService.deploy(turnContext, args);
+            case DELETE -> messageService.deleteMessage(turnContext);
         }
     }
 
