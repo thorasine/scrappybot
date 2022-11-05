@@ -11,6 +11,7 @@ import io.thorasine.scrappybot.commands.commandline.CommandLineService;
 import io.thorasine.scrappybot.commands.commandline.enums.Command;
 import io.thorasine.scrappybot.commands.deploy.DeployService;
 import io.thorasine.scrappybot.commands.help.HelpService;
+import io.thorasine.scrappybot.commands.kill.KillService;
 import io.thorasine.scrappybot.commands.release.ReleaseService;
 import io.thorasine.scrappybot.message.MessageService;
 import io.thorasine.scrappybot.techcore.error.ExceptionHandler;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 public class ConversationActivityHandler extends ActivityHandler {
 
     private final HelpService helpService;
+    private final KillService killService;
     private final DeployService deployService;
     private final ReleaseService releaseService;
     private final MessageService messageService;
@@ -76,6 +78,7 @@ public class ConversationActivityHandler extends ActivityHandler {
             case RELEASE -> releaseService.release(turnContext, args);
             case DEPLOY -> deployService.deploy(turnContext, args);
             case DELETE -> messageService.deleteMessage(turnContext);
+            case KILL -> killService.kill(turnContext);
         }
     }
 

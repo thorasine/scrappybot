@@ -10,7 +10,8 @@ public enum Command {
     HELP("help", getHelpOptions(), false, "Show help menu."),
     RELEASE("release", getReleaseOptions(), false, "Release an app version through One Button Release job."),
     DEPLOY("deploy", getDeployOptions(), false, "Deploy the selected branch or tag on AWS."),
-    DELETE("delete", getDeleteOptions(), true, "Deletes last bot message (for example deploy card on 'Exit'");
+    DELETE("delete", getDeleteOptions(), true, "Deletes last bot message (for example deploy card on 'Exit'"),
+    KILL("kill", getKillOptions(), false, "This kills the bot.");
 
     private final String value;
     private final Options options;
@@ -49,6 +50,10 @@ public enum Command {
     }
 
     private static Options getDeleteOptions() {
+        return new Options();
+    }
+
+    private static Options getKillOptions() {
         return new Options();
     }
 
