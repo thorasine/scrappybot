@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.properties;
+package io.thorasine.scrappybot.techcore.properties;
 
 import lombok.Getter;
 import lombok.Setter;

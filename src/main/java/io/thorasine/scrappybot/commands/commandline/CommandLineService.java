@@ -1,10 +1,10 @@
-package io.thorasine.scrappybot.features.common;
+package io.thorasine.scrappybot.commands.commandline;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import com.microsoft.bot.builder.TurnContext;
-import io.thorasine.scrappybot.features.common.enums.Command;
+import io.thorasine.scrappybot.commands.commandline.enums.Command;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;

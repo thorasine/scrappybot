@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.configuration;
+package io.thorasine.scrappybot.techcore.configuration;
 
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;

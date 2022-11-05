@@ -1,8 +1,8 @@
-package io.thorasine.scrappybot.features.help;
+package io.thorasine.scrappybot.commands.help;
 
 import com.microsoft.bot.builder.TurnContext;
-import io.thorasine.scrappybot.features.common.CommandLineService;
-import io.thorasine.scrappybot.features.common.enums.Command;
+import io.thorasine.scrappybot.commands.commandline.CommandLineService;
+import io.thorasine.scrappybot.commands.commandline.enums.Command;
 import io.thorasine.scrappybot.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;

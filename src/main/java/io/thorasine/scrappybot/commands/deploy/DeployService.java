@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.features.deploy;
+package io.thorasine.scrappybot.commands.deploy;
 
 import java.util.ArrayList;
 import java.util.List;
