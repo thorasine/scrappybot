@@ -13,6 +13,8 @@ import io.thorasine.scrappybot.commands.deploy.DeployService;
 import io.thorasine.scrappybot.commands.help.HelpService;
 import io.thorasine.scrappybot.commands.release.ReleaseService;
 import io.thorasine.scrappybot.message.MessageService;
+import io.thorasine.scrappybot.techcore.error.ExceptionHandler;
+import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
@@ -30,6 +32,7 @@ public class ConversationActivityHandler extends ActivityHandler {
     private final HelpService helpService;
     private final DeployService deployService;
     private final ReleaseService releaseService;
+    private final ExceptionHandler exceptionHandler;
     private final CommandLineParser commandLineParser;
     private final CommandLineService commandLineService;
     private final ConversationReferences conversationReferences;
@@ -45,23 +48,30 @@ public class ConversationActivityHandler extends ActivityHandler {
         addConversationReference(turnContext.getActivity());
         turnContext.getActivity().removeRecipientMention();
         log.info("From: {}, message: {}", turnContext.getActivity().getFrom().getName(), turnContext.getActivity().getText());
+        try {
+            processMessage(turnContext);
+        } catch (Exception e) {
+            exceptionHandler.handleException(e, turnContext);
+        }
+        return new CompletableFuture<>();
+    }
+
+    private void processMessage(TurnContext turnContext) {
         String[] args = getArgs(turnContext.getActivity().getText());
         if (args.length == 0) {
-            messageService.sendMessage(turnContext, "What?");
-            return new CompletableFuture<>();
+            throw new SystemRuntimeErrorException(turnContext, "What?");
         }
         if (args[0].equalsIgnoreCase("exit")) {
             messageService.deleteMessage(turnContext);
-            return new CompletableFuture<>();
+            return;
         }
         invokeFeature(turnContext, args);
-        return new CompletableFuture<>();
     }
 
     private void invokeFeature(TurnContext turnContext, String[] stringArgs) {
         Command command = Command.from(stringArgs[0]);
         if (null == command) {
-            sendDefaultErrorMessage(turnContext);
+            throw new SystemRuntimeErrorException(turnContext, getDefaultErrorMessage(turnContext));
         }
         CommandLine args;
         try {
@@ -76,7 +86,6 @@ public class ConversationActivityHandler extends ActivityHandler {
             case RELEASE -> releaseService.release(turnContext, args);
             case DEPLOY -> deployService.deploy(turnContext, args);
         }
-        ;
     }
 
     private void addConversationReference(Activity activity) {
@@ -84,10 +93,9 @@ public class ConversationActivityHandler extends ActivityHandler {
         conversationReferences.put(conversationReference.getUser().getId(), conversationReference);
     }
 
-    private void sendDefaultErrorMessage(TurnContext turnContext) {
+    private String getDefaultErrorMessage(TurnContext turnContext) {
         String errorMessageTemplate = "Not a command: \"{0}\", for help try \"help\"";
-        String errorMessage = MessageFormat.format(errorMessageTemplate, turnContext.getActivity().getText());
-        messageService.sendMessage(turnContext, errorMessage);
+        return MessageFormat.format(errorMessageTemplate, turnContext.getActivity().getText());
     }
 
     private String[] getArgs(String text) {
