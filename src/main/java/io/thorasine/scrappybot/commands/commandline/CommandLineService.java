@@ -3,7 +3,6 @@ package io.thorasine.scrappybot.commands.commandline;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.commands.commandline.enums.Command;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.HelpFormatter;
@@ -19,7 +18,7 @@ public class CommandLineService {
     private final String EMPTY_LINE = "\u206E\n";
     private final String LINE_BREAK = "---\n";
 
-    public String getCommandErrorHelpMessage(TurnContext turnContext, ParseException exception, Command command) {
+    public String getCommandErrorHelpMessage(ParseException exception, Command command) {
         String exceptionMessage = exception.getMessage() + "\n";
         String helpMenu = getHelpMenu(command);
         return exceptionMessage + helpMenu;

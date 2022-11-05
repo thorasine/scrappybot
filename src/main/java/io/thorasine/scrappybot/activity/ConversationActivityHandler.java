@@ -38,12 +38,6 @@ public class ConversationActivityHandler extends ActivityHandler {
     private final ConversationReferences conversationReferences;
 
     @Override
-    protected CompletableFuture<Void> onConversationUpdateActivity(TurnContext turnContext) {
-        addConversationReference(turnContext.getActivity());
-        return super.onConversationUpdateActivity(turnContext);
-    }
-
-    @Override
     protected CompletableFuture<Void> onMessageActivity(TurnContext turnContext) {
         addConversationReference(turnContext.getActivity());
         turnContext.getActivity().removeRecipientMention();
@@ -71,15 +65,14 @@ public class ConversationActivityHandler extends ActivityHandler {
     private void invokeFeature(TurnContext turnContext, String[] stringArgs) {
         Command command = Command.from(stringArgs[0]);
         if (null == command) {
-            throw new SystemRuntimeErrorException(turnContext, getDefaultErrorMessage(turnContext));
+            throw new SystemRuntimeErrorException(turnContext, getCommandErrorMessage(turnContext));
         }
         CommandLine args;
         try {
             args = commandLineParser.parse(command.getOptions(), stringArgs);
         } catch (ParseException exception) {
             exception.printStackTrace();
-            messageService.sendMessage(turnContext, commandLineService.getCommandErrorHelpMessage(turnContext, exception, command));
-            return;
+            throw new SystemRuntimeErrorException(turnContext, commandLineService.getCommandErrorHelpMessage(exception, command));
         }
         switch (command) {
             case HELP -> helpService.getAllCommandsHelp(turnContext, args);
@@ -88,12 +81,18 @@ public class ConversationActivityHandler extends ActivityHandler {
         }
     }
 
+    @Override
+    protected CompletableFuture<Void> onConversationUpdateActivity(TurnContext turnContext) {
+        addConversationReference(turnContext.getActivity());
+        return super.onConversationUpdateActivity(turnContext);
+    }
+
     private void addConversationReference(Activity activity) {
         ConversationReference conversationReference = activity.getConversationReference();
         conversationReferences.put(conversationReference.getUser().getId(), conversationReference);
     }
 
-    private String getDefaultErrorMessage(TurnContext turnContext) {
+    private String getCommandErrorMessage(TurnContext turnContext) {
         String errorMessageTemplate = "Not a command: \"{0}\", for help try \"help\"";
         return MessageFormat.format(errorMessageTemplate, turnContext.getActivity().getText());
     }
