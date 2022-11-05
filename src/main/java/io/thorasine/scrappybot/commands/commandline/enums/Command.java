@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.commandline.enums;
+package io.thorasine.scrappybot.commands.commandline.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ public enum Command {
     HELP("help", getHelpOptions(), false, "Show help menu."),
     RELEASE("release", getReleaseOptions(), false, "Release an app version through One Button Release job."),
     DEPLOY("deploy", getDeployOptions(), false, "Deploy the selected branch or tag on AWS."),
-    DELETE("delete", getDeployOptions(), true, "Deletes last bot message (for example deploy card 'Exit'");
+    DELETE("delete", getDeleteOptions(), true, "Deletes last bot message (for example deploy card on 'Exit'");
 
     private final String value;
     private final Options options;

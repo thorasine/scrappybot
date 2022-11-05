@@ -7,8 +7,8 @@ import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ConversationReference;
-import io.thorasine.scrappybot.commandline.CommandLineService;
-import io.thorasine.scrappybot.commandline.enums.Command;
+import io.thorasine.scrappybot.commands.commandline.CommandLineService;
+import io.thorasine.scrappybot.commands.commandline.enums.Command;
 import io.thorasine.scrappybot.commands.deploy.DeployService;
 import io.thorasine.scrappybot.commands.help.HelpService;
 import io.thorasine.scrappybot.commands.release.ReleaseService;
@@ -27,10 +27,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ConversationActivityHandler extends ActivityHandler {
 
-    private final MessageService messageService;
     private final HelpService helpService;
     private final DeployService deployService;
     private final ReleaseService releaseService;
+    private final MessageService messageService;
     private final ExceptionHandler exceptionHandler;
     private final CommandLineService commandLineService;
     private final ConversationReferences conversationReferences;
