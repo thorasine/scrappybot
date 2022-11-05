@@ -45,7 +45,7 @@ public class ConversationActivityHandler extends ActivityHandler {
         } catch (Exception e) {
             exceptionHandler.handleException(e, turnContext);
         }
-        return new CompletableFuture<>();
+        return super.onMessageActivity(turnContext);
     }
 
     private void processMessage(TurnContext turnContext) {
