@@ -45,14 +45,21 @@ public class DeployService {
         card.setSubtitle("Select branch to deploy");
         List<CardAction> buttons = new ArrayList<>();
         buttons.add(createDeployCard("develop"));
-        buttons.add(createDeployCard("11.0.0", "release/11.0.0"));
-        buttons.add(createDeployCard("12.0.0", "release/12.0.0"));
+        buttons.add(createDeployCard("release/12.0.0"));
+        buttons.add(createDeployCard("release/11.0.0"));
 
-        CardAction deleteAction = new CardAction();
-        deleteAction.setType(ActionTypes.MESSAGE_BACK);
-        deleteAction.setTitle("Exit");
-        deleteAction.setText("exit");
-        buttons.add(deleteAction);
+        CardAction abort = new CardAction();
+        abort.setType(ActionTypes.MESSAGE_BACK);
+        abort.setTitle("Abort");
+        abort.setText("deploy -a");
+        buttons.add(abort);
+
+        CardAction delete = new CardAction();
+        delete.setType(ActionTypes.MESSAGE_BACK);
+        delete.setTitle("Exit");
+        delete.setText("exit");
+        buttons.add(delete);
+
         card.setButtons(buttons);
         return card;
     }
