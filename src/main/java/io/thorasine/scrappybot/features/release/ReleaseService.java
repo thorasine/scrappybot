@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.features.release.service;
+package io.thorasine.scrappybot.features.release;
 
 import java.util.concurrent.CompletableFuture;
 

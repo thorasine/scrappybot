@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.features.common.service;
+package io.thorasine.scrappybot.features.common;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

@@ -1,2 +1,5 @@
 server:
   port: 3978
+bot:
+  microsoft:
+    app-id: fe8b029c-89bc-48dd-b815-ece93e9fba4a

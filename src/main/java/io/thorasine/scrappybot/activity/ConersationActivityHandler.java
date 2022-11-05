@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.message;
+package io.thorasine.scrappybot.activity;
 
 import java.text.MessageFormat;
 import java.util.concurrent.CompletableFuture;
@@ -6,11 +6,12 @@ import java.util.concurrent.CompletableFuture;
 import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
+import com.microsoft.bot.schema.ConversationReference;
 import io.thorasine.scrappybot.features.common.enums.Command;
-import io.thorasine.scrappybot.features.common.service.CommandLineService;
-import io.thorasine.scrappybot.features.deploy.service.DeployService;
-import io.thorasine.scrappybot.features.help.service.HelpService;
-import io.thorasine.scrappybot.features.release.service.ReleaseService;
+import io.thorasine.scrappybot.features.common.CommandLineService;
+import io.thorasine.scrappybot.features.deploy.DeployService;
+import io.thorasine.scrappybot.features.help.HelpService;
+import io.thorasine.scrappybot.features.release.ReleaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
@@ -22,13 +23,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class IncomingMessageHandler extends ActivityHandler {
+public class ConersationActivityHandler extends ActivityHandler {
 
     private final HelpService helpService;
     private final DeployService deployService;
     private final ReleaseService releaseService;
     private final CommandLineParser commandLineParser;
     private final CommandLineService commandLineService;
+    private final ConversationReferences conversationReferences;
+
+    @Override
+    protected CompletableFuture<Void> onConversationUpdateActivity(TurnContext turnContext) {
+        ConversationReference conversationReference = turnContext.getActivity().getConversationReference();
+        conversationReferences.put(conversationReference.getUser().getId(), conversationReference);
+        return super.onConversationUpdateActivity(turnContext);
+    }
 
     @Override
     protected CompletableFuture<Void> onMessageActivity(TurnContext turnContext) {
