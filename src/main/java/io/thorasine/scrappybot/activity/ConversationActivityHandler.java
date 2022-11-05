@@ -4,7 +4,6 @@ import java.text.MessageFormat;
 import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.bot.builder.ActivityHandler;
-import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ConversationReference;
@@ -48,10 +47,12 @@ public class ConversationActivityHandler extends ActivityHandler {
         log.info("From: {}, message: {}", turnContext.getActivity().getFrom().getName(), turnContext.getActivity().getText());
         String[] args = getArgs(turnContext.getActivity().getText());
         if (args.length == 0) {
-            return turnContext.sendActivity(MessageFactory.text("What?")).thenApply(sendResult -> null);
+            messageService.sendMessage(turnContext, "What?");
+            return new CompletableFuture<>();
         }
         if (args[0].equalsIgnoreCase("exit")) {
-            return cancelCardActivity(turnContext);
+            messageService.deleteMessage(turnContext);
+            return new CompletableFuture<>();
         }
         invokeFeature(turnContext, args);
         return new CompletableFuture<>();
@@ -74,11 +75,8 @@ public class ConversationActivityHandler extends ActivityHandler {
             case HELP -> helpService.getAllCommandsHelp(turnContext, args);
             case RELEASE -> releaseService.release(turnContext, args);
             case DEPLOY -> deployService.deploy(turnContext, args);
-        };
-    }
-
-    private CompletableFuture<Void> cancelCardActivity(TurnContext turnContext) {
-        return turnContext.deleteActivity(turnContext.getActivity().getReplyToId());
+        }
+        ;
     }
 
     private void addConversationReference(Activity activity) {

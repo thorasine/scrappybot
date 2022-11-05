@@ -52,6 +52,10 @@ public class MessageService {
         }
     }
 
+    public void deleteMessage(TurnContext turnContext) {
+        turnContext.deleteActivity(turnContext.getActivity().getReplyToId());
+    }
+
     private void sendMessage(ConversationReference reference, Activity activity) {
         adapter.continueConversation(APP_ID, reference, turnContext -> turnContext.sendActivity(activity).thenApply(resourceResponse -> null));
     }
