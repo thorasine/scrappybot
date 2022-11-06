@@ -6,3 +6,6 @@ bot:
     developers: Adele Vance
     qa: Lynne Robbins
     business: Megan Bowen
+  feature:
+    deploy:
+      default-branches: develop,release/12.0.0,release/11.0.0

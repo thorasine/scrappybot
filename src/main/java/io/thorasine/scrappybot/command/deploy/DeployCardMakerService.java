@@ -6,6 +6,7 @@ import java.util.List;
 import com.microsoft.bot.schema.ActionTypes;
 import com.microsoft.bot.schema.CardAction;
 import com.microsoft.bot.schema.HeroCard;
+import io.thorasine.scrappybot.techcore.properties.DeployProperties;
 import io.thorasine.scrappybot.utility.CardMakerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeployCardMakerService extends CardMakerService {
 
+    private final DeployProperties deployProperties;
+
     public HeroCard createDeployCards() {
         HeroCard card = new HeroCard();
         card.setTitle("Deploy");
         card.setSubtitle("Select branch to deploy");
         List<CardAction> buttons = new ArrayList<>();
-        buttons.add(createDeployCard("develop"));
-        buttons.add(createDeployCard("release/11.0.0"));
-        buttons.add(createDeployCard("release/12.0.0"));
+        deployProperties.getDefaultBranches().forEach(branch -> buttons.add(createDeployCard(branch)));
         buttons.add(createAbortCard());
         buttons.add(createDeleteCard());
         card.setButtons(buttons);
