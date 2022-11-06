@@ -14,7 +14,6 @@ import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorExcept
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -50,16 +49,8 @@ public class ConversationActivityHandler extends ActivityHandler {
     }
 
     private void invokeFeature(TurnContext turnContext, String[] stringArgs) {
-        CommandLine args;
-        Command command = Command.from(stringArgs[0]);
-        if (null == command) {
-            throw new SystemRuntimeErrorException(turnContext, commandService.getCommandErrorMessage(turnContext));
-        }
-        try {
-            args = commandLineService.parse(command, stringArgs);
-        } catch (ParseException exception) {
-            throw new SystemRuntimeErrorException(turnContext, commandLineService.getCommandErrorHelpMessage(exception, command));
-        }
+        Command command = commandLineService.getCommand(turnContext, stringArgs);
+        CommandLine args = commandLineService.getArgs(turnContext, command, stringArgs);
         commandService.invokeFeature(turnContext, command, args);
     }
 

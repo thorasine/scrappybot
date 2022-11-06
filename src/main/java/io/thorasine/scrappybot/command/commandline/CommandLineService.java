@@ -2,8 +2,11 @@ package io.thorasine.scrappybot.command.commandline;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.MessageFormat;
 
+import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.command.Command;
+import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -21,9 +24,27 @@ public class CommandLineService {
     private final String EMPTY_LINE = "\u206E\n";
     private final String LINE_BREAK = "---\n";
 
+    public Command getCommand(TurnContext turnContext, String[] stringArgs) {
+        Command command = Command.from(stringArgs[0]);
+        if (null == command) {
+            throw new SystemRuntimeErrorException(turnContext, getCommandErrorMessage(turnContext));
+        }
+        return command;
+    }
 
-    public CommandLine parse(Command command, String[] args) throws ParseException {
-        return commandLineParser.parse(command.getOptions(), args);
+    public CommandLine getArgs(TurnContext turnContext, Command command, String[] stringArgs) {
+        CommandLine args;
+        try {
+            args = commandLineParser.parse(command.getOptions(), stringArgs);
+        } catch (ParseException e) {
+            throw new SystemRuntimeErrorException(turnContext, getCommandErrorHelpMessage(e, command));
+        }
+        return args;
+    }
+
+    public String getCommandErrorMessage(TurnContext turnContext) {
+        String errorMessageTemplate = "Not a command: \"{0}\", for help try \"help\"";
+        return MessageFormat.format(errorMessageTemplate, turnContext.getActivity().getText());
     }
 
     public String getCommandErrorHelpMessage(ParseException exception, Command command) {

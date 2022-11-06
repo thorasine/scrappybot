@@ -1,7 +1,5 @@
 package io.thorasine.scrappybot.command;
 
-import java.text.MessageFormat;
-
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.command.deploy.DeployService;
 import io.thorasine.scrappybot.command.help.HelpService;
@@ -36,10 +34,5 @@ public class CommandService {
             case DELETE -> messageService.deleteMessage(turnContext);
             case KILL -> killService.kill(turnContext);
         }
-    }
-
-    public String getCommandErrorMessage(TurnContext turnContext) {
-        String errorMessageTemplate = "Not a command: \"{0}\", for help try \"help\"";
-        return MessageFormat.format(errorMessageTemplate, turnContext.getActivity().getText());
     }
 }
