@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.techcore.permission;
+package io.thorasine.scrappybot.techcore.authorization;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

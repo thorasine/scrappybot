@@ -6,7 +6,7 @@ import java.text.MessageFormat;
 
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.command.Command;
-import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
+import io.thorasine.scrappybot.techcore.error.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

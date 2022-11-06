@@ -2,7 +2,6 @@ package io.thorasine.scrappybot.techcore.error;
 
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.message.MessageService;
-import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

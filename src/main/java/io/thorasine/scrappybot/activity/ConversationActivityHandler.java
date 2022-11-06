@@ -10,7 +10,7 @@ import io.thorasine.scrappybot.command.Command;
 import io.thorasine.scrappybot.command.CommandService;
 import io.thorasine.scrappybot.command.commandline.CommandLineService;
 import io.thorasine.scrappybot.techcore.error.ExceptionHandler;
-import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
+import io.thorasine.scrappybot.techcore.error.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;

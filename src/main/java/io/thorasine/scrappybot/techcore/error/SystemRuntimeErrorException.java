@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.techcore.error.exception;
+package io.thorasine.scrappybot.techcore.error;
 
 import com.microsoft.bot.builder.TurnContext;
 import lombok.Getter;

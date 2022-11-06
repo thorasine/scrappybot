@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.techcore.permission;
+package io.thorasine.scrappybot.techcore.authorization;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.command.Command;
-import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
+import io.thorasine.scrappybot.techcore.error.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -22,7 +22,7 @@ public class AuthorizeAspect {
 
     private final Map<String, Role> rolesByNames;
 
-    @Around("@annotation(io.thorasine.scrappybot.techcore.permission.Authorize)")
+    @Around("@annotation(io.thorasine.scrappybot.techcore.authorization.Authorize)")
     public Object checkMaxFileSize(ProceedingJoinPoint joinPoint) throws Throwable {
         TurnContext turnContext = getTurnContext(joinPoint);
         Command command = getCommand(joinPoint);

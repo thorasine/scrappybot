@@ -2,15 +2,15 @@ package io.thorasine.scrappybot.command;
 
 import java.util.List;
 
-import io.thorasine.scrappybot.techcore.permission.Role;
+import io.thorasine.scrappybot.techcore.authorization.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.Options;
 
-import static io.thorasine.scrappybot.techcore.permission.Role.BUSINESS;
-import static io.thorasine.scrappybot.techcore.permission.Role.DEVELOPER;
-import static io.thorasine.scrappybot.techcore.permission.Role.OPERATOR;
-import static io.thorasine.scrappybot.techcore.permission.Role.QA;
+import static io.thorasine.scrappybot.techcore.authorization.Role.BUSINESS;
+import static io.thorasine.scrappybot.techcore.authorization.Role.DEVELOPER;
+import static io.thorasine.scrappybot.techcore.authorization.Role.OPERATOR;
+import static io.thorasine.scrappybot.techcore.authorization.Role.QA;
 
 @Getter
 @RequiredArgsConstructor

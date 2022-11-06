@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.techcore.permission;
+package io.thorasine.scrappybot.techcore.authorization;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

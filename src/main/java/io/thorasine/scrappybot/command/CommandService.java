@@ -7,7 +7,7 @@ import io.thorasine.scrappybot.command.kill.KillService;
 import io.thorasine.scrappybot.command.release.ReleaseService;
 import io.thorasine.scrappybot.command.restart.RestartService;
 import io.thorasine.scrappybot.message.MessageService;
-import io.thorasine.scrappybot.techcore.permission.Authorize;
+import io.thorasine.scrappybot.techcore.authorization.Authorize;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
 import org.springframework.stereotype.Service;
