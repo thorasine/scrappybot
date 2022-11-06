@@ -13,6 +13,7 @@ import io.thorasine.scrappybot.commands.deploy.DeployService;
 import io.thorasine.scrappybot.commands.help.HelpService;
 import io.thorasine.scrappybot.commands.kill.KillService;
 import io.thorasine.scrappybot.commands.release.ReleaseService;
+import io.thorasine.scrappybot.commands.restart.RestartService;
 import io.thorasine.scrappybot.message.MessageService;
 import io.thorasine.scrappybot.techcore.error.ExceptionHandler;
 import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
@@ -32,6 +33,7 @@ public class ConversationActivityHandler extends ActivityHandler {
     private final KillService killService;
     private final DeployService deployService;
     private final ReleaseService releaseService;
+    private final RestartService restartService;
     private final MessageService messageService;
     private final ExceptionHandler exceptionHandler;
     private final CommandLineService commandLineService;
@@ -77,6 +79,7 @@ public class ConversationActivityHandler extends ActivityHandler {
             case HELP -> helpService.getAllCommandsHelp(turnContext, args);
             case RELEASE -> releaseService.release(turnContext, args);
             case DEPLOY -> deployService.deploy(turnContext, args);
+            case RESTART -> restartService.restart(turnContext, args);
             case DELETE -> messageService.deleteMessage(turnContext);
             case KILL -> killService.kill(turnContext);
         }

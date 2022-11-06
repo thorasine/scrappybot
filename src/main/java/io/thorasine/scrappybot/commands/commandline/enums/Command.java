@@ -8,10 +8,11 @@ import org.apache.commons.cli.Options;
 @RequiredArgsConstructor
 public enum Command {
     HELP("help", getHelpOptions(), false, "Show help menu."),
-    RELEASE("release", getReleaseOptions(), false, "Release an app version through One Button Release job."),
     DEPLOY("deploy", getDeployOptions(), false, "Deploy the selected branch or tag on AWS."),
+    RESTART("restart", getRestartOptions(), false, "Restart the selected applications on AWS."),
+    RELEASE("release", getReleaseOptions(), false, "Release an app version through One Button Release job."),
     DELETE("delete", getDeleteOptions(), true, "Deletes last bot message (for example deploy card on 'Exit'"),
-    KILL("kill", getKillOptions(), false, "This kills the bot.");
+    KILL("kill", getKillOptions(), true, "This kills the bot.");
 
     private final String value;
     private final Options options;
@@ -33,19 +34,27 @@ public enum Command {
         return options;
     }
 
-    private static Options getReleaseOptions() {
-        Options options = new Options();
-        options.addRequiredOption("b", "branch", true, "Branch to create release from.");
-        options.addRequiredOption("t", "tag", true, "Tag of the release.");
-        options.addOption("a", "abort", false, "Abort current release process.");
-        return options;
-    }
-
     private static Options getDeployOptions() {
         Options options = new Options();
         options.addOption("b", "branch", true, "Branch (or tag) to deploy from.");
         options.addOption("t", "tag", true, "Tag to deploy from.");
         options.addOption("a", "abort", false, "Abort current deploy.");
+        return options;
+    }
+
+    private static Options getRestartOptions() {
+        Options options = new Options();
+        options.addOption("l", "lizi", false, "Restart lizi service.");
+        options.addOption("i", "infra", false, "Restart the infra: db / clamav / maildev.");
+        options.addOption("b", "bot", false, "Restart the bot.");
+        return options;
+    }
+
+    private static Options getReleaseOptions() {
+        Options options = new Options();
+        options.addRequiredOption("b", "branch", true, "Branch to create release from.");
+        options.addRequiredOption("t", "tag", true, "Tag of the release.");
+        options.addOption("a", "abort", false, "Abort current release process.");
         return options;
     }
 
