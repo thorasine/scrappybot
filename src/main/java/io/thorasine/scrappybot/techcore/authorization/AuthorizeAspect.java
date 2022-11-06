@@ -23,7 +23,7 @@ public class AuthorizeAspect {
     private final Map<String, Role> rolesByNames;
 
     @Around("@annotation(io.thorasine.scrappybot.techcore.authorization.Authorize)")
-    public Object checkMaxFileSize(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object authorize(ProceedingJoinPoint joinPoint) throws Throwable {
         TurnContext turnContext = getTurnContext(joinPoint);
         Command command = getCommand(joinPoint);
         checkPermission(turnContext, command);
