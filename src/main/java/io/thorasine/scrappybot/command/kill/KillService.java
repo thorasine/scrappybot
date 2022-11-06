@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.commands.kill;
+package io.thorasine.scrappybot.command.kill;
 
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.message.MessageService;

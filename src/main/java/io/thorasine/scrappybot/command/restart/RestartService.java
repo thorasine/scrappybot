@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.commands.restart;
+package io.thorasine.scrappybot.command.restart;
 
 import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;

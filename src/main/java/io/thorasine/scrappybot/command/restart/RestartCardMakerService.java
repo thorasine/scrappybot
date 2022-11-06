@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.commands.restart;
+package io.thorasine.scrappybot.command.restart;
 
 import java.util.ArrayList;
 import java.util.List;

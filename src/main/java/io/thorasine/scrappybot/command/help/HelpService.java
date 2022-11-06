@@ -1,8 +1,8 @@
-package io.thorasine.scrappybot.commands.help;
+package io.thorasine.scrappybot.command.help;
 
 import com.microsoft.bot.builder.TurnContext;
-import io.thorasine.scrappybot.commands.commandline.CommandLineService;
-import io.thorasine.scrappybot.commands.commandline.enums.Command;
+import io.thorasine.scrappybot.command.commandline.CommandLineService;
+import io.thorasine.scrappybot.command.commandline.enums.Command;
 import io.thorasine.scrappybot.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
@@ -15,7 +15,7 @@ public class HelpService {
     private final MessageService messageService;
     private final CommandLineService commandLineService;
 
-    public void getAllCommandsHelp(TurnContext turnContext, CommandLine args) {
+    public void sendAllCommandsHelpMessage(TurnContext turnContext, CommandLine args) {
         String message;
         if (args.hasOption("command")) {
             Command command = Command.from(args.getOptionValue("command"));

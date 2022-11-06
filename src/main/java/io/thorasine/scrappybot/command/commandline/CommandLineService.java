@@ -1,9 +1,9 @@
-package io.thorasine.scrappybot.commands.commandline;
+package io.thorasine.scrappybot.command.commandline;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import io.thorasine.scrappybot.commands.commandline.enums.Command;
+import io.thorasine.scrappybot.command.commandline.enums.Command;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

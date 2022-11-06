@@ -7,14 +7,9 @@ import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ConversationReference;
-import io.thorasine.scrappybot.commands.commandline.CommandLineService;
-import io.thorasine.scrappybot.commands.commandline.enums.Command;
-import io.thorasine.scrappybot.commands.deploy.DeployService;
-import io.thorasine.scrappybot.commands.help.HelpService;
-import io.thorasine.scrappybot.commands.kill.KillService;
-import io.thorasine.scrappybot.commands.release.ReleaseService;
-import io.thorasine.scrappybot.commands.restart.RestartService;
-import io.thorasine.scrappybot.message.MessageService;
+import io.thorasine.scrappybot.command.CommandService;
+import io.thorasine.scrappybot.command.commandline.CommandLineService;
+import io.thorasine.scrappybot.command.commandline.enums.Command;
 import io.thorasine.scrappybot.techcore.error.ExceptionHandler;
 import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +24,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ConversationActivityHandler extends ActivityHandler {
 
-    private final HelpService helpService;
-    private final KillService killService;
-    private final DeployService deployService;
-    private final ReleaseService releaseService;
-    private final RestartService restartService;
-    private final MessageService messageService;
+    private final CommandService commandService;
     private final ExceptionHandler exceptionHandler;
     private final CommandLineService commandLineService;
     private final ConversationReferences conversationReferences;
@@ -72,13 +62,13 @@ public class ConversationActivityHandler extends ActivityHandler {
             throw new SystemRuntimeErrorException(turnContext, commandLineService.getCommandErrorHelpMessage(exception, command));
         }
         switch (command) {
-            case HELLO -> messageService.sendMessage(turnContext, "Hello back!");
-            case HELP -> helpService.getAllCommandsHelp(turnContext, args);
-            case DEPLOY -> deployService.deploy(turnContext, args);
-            case RESTART -> restartService.restart(turnContext, args);
-            case RELEASE -> releaseService.release(turnContext, args);
-            case DELETE -> messageService.deleteMessage(turnContext);
-            case KILL -> killService.kill(turnContext);
+            case HELLO -> commandService.hello(turnContext);
+            case HELP -> commandService.help(turnContext, args);
+            case DEPLOY -> commandService.deploy(turnContext, args);
+            case RESTART -> commandService.restart(turnContext, args);
+            case RELEASE -> commandService.release(turnContext, args);
+            case DELETE -> commandService.delete(turnContext);
+            case KILL -> commandService.kill(turnContext);
         }
     }
 

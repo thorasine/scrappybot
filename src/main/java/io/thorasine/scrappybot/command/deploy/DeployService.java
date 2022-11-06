@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.commands.deploy;
+package io.thorasine.scrappybot.command.deploy;
 
 import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;

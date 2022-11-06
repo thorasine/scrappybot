@@ -1,4 +1,4 @@
-package io.thorasine.scrappybot.commands.commandline.enums;
+package io.thorasine.scrappybot.command.commandline.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
