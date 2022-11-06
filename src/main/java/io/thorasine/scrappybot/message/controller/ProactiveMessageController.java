@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class ProactiveMessageService {
+public class ProactiveMessageController {
 
     private final MessageService messageService;
 

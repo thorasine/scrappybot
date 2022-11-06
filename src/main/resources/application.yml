@@ -1,4 +1,8 @@
 server:
   port: 3978
 bot:
-  group-chat: test
+  roles:
+    operators: Krisztián Zaja,Lee Gu
+    developers: Adele Vance
+    qa: Lynne Robbins
+    business: Megan Bowen

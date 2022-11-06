@@ -1,22 +1,31 @@
 package io.thorasine.scrappybot.command;
 
+import java.util.List;
+
+import io.thorasine.scrappybot.techcore.permissions.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.Options;
 
+import static io.thorasine.scrappybot.techcore.permissions.Role.BUSINESS;
+import static io.thorasine.scrappybot.techcore.permissions.Role.DEVELOPER;
+import static io.thorasine.scrappybot.techcore.permissions.Role.OPERATOR;
+import static io.thorasine.scrappybot.techcore.permissions.Role.QA;
+
 @Getter
 @RequiredArgsConstructor
 public enum Command {
-    HELP("help", getHelpOptions(), false, "Show help menu."),
-    HELLO("hello", getHelloOptions(), true, "Checks if the bot is alive."),
-    DEPLOY("deploy", getDeployOptions(), false, "Deploy the selected branch or tag on AWS."),
-    RESTART("restart", getRestartOptions(), false, "Restart the selected applications on AWS."),
-    RELEASE("release", getReleaseOptions(), false, "Release an app version through One Button Release job."),
-    DELETE("delete", getDeleteOptions(), true, "Deletes last bot message (for example deploy card on 'Exit'"),
-    KILL("kill", getKillOptions(), true, "This kills the bot.");
+    HELP("help", getHelpOptions(), getEmptyRoles(), false, "Show help menu."),
+    HELLO("hello", getHelloOptions(), getEmptyRoles(), true, "Checks if the bot is alive."),
+    DEPLOY("deploy", getDeployOptions(), getDeployRoles(), false, "Deploy the selected branch or tag on AWS."),
+    RESTART("restart", getRestartOptions(), getRestartRoles(), false, "Restart the selected applications on AWS."),
+    RELEASE("release", getReleaseOptions(), gerReleaseRoles(), false, "Release an app version through One Button Release job."),
+    DELETE("delete", getDeleteOptions(), getDeleteRoles(), true, "Deletes message it replies to (for example deploy card on 'Exit'"),
+    KILL("kill", getKillOptions(), getKillRoles(), true, "This kills the bot.");
 
     private final String value;
     private final Options options;
+    private final List<Role> roles;
     private final boolean hidden;
     private final String description;
 
@@ -29,10 +38,38 @@ public enum Command {
         return null;
     }
 
+    private static List<Role> getEmptyRoles() {
+        return List.of();
+    }
+
+    private static List<Role> getDeployRoles() {
+        return List.of(OPERATOR, QA, BUSINESS);
+    }
+
+    private static List<Role> getRestartRoles() {
+        return List.of(OPERATOR);
+    }
+
+    private static List<Role> gerReleaseRoles() {
+        return List.of(OPERATOR);
+    }
+
+    private static List<Role> getDeleteRoles() {
+        return List.of(OPERATOR, DEVELOPER, QA, BUSINESS);
+    }
+
+    private static List<Role> getKillRoles() {
+        return List.of(OPERATOR);
+    }
+
     private static Options getHelpOptions() {
         Options options = new Options();
         options.addOption("c", "command", true, "Show command args.");
         return options;
+    }
+
+    private static Options getHelloOptions() {
+        return new Options();
     }
 
     private static Options getDeployOptions() {
@@ -64,10 +101,6 @@ public enum Command {
     }
 
     private static Options getKillOptions() {
-        return new Options();
-    }
-
-    private static Options getHelloOptions() {
         return new Options();
     }
 

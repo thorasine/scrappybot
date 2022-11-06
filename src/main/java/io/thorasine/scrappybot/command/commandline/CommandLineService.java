@@ -48,6 +48,7 @@ public class CommandLineService {
         StringBuilder message = new StringBuilder();
         message.append("# ").append(StringUtils.capitalize(command.getValue())).append("\n");
         message.append(command.getDescription()).append("\n");
+        message.append("Available for ").append(getRolesText(command)).append("\n");
         message.append(getHelpMenu(command, withArgs));
         return message.toString();
     }
@@ -63,6 +64,19 @@ public class CommandLineService {
             helpFormatter.getLeftPadding(), helpFormatter.getDescPadding(), "", true);
         pw.flush();
         return formatHelpMenuMessage(out.toString(), withArgs);
+    }
+
+    private String getRolesText(Command command) {
+        if (command.getRoles().isEmpty()) {
+            return "everyone.";
+        }
+        StringBuilder sb = new StringBuilder();
+        command.getRoles().forEach(role -> {
+            sb.append(StringUtils.capitalize(role.getValue())).append(", ");
+        });
+        sb.setLength(sb.length() - 2);
+        sb.append(".");
+        return sb.toString();
     }
 
     private String formatHelpMenuMessage(String response, boolean withArgs) {
