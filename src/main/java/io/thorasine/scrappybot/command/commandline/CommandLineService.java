@@ -21,6 +21,7 @@ public class CommandLineService {
     private final String EMPTY_LINE = "\u206E\n";
     private final String LINE_BREAK = "---\n";
 
+
     public CommandLine parse(Command command, String[] args) throws ParseException {
         return commandLineParser.parse(command.getOptions(), args);
     }

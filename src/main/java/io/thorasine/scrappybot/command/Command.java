@@ -2,15 +2,15 @@ package io.thorasine.scrappybot.command;
 
 import java.util.List;
 
-import io.thorasine.scrappybot.techcore.permissions.Role;
+import io.thorasine.scrappybot.techcore.permission.Role;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.Options;
 
-import static io.thorasine.scrappybot.techcore.permissions.Role.BUSINESS;
-import static io.thorasine.scrappybot.techcore.permissions.Role.DEVELOPER;
-import static io.thorasine.scrappybot.techcore.permissions.Role.OPERATOR;
-import static io.thorasine.scrappybot.techcore.permissions.Role.QA;
+import static io.thorasine.scrappybot.techcore.permission.Role.BUSINESS;
+import static io.thorasine.scrappybot.techcore.permission.Role.DEVELOPER;
+import static io.thorasine.scrappybot.techcore.permission.Role.OPERATOR;
+import static io.thorasine.scrappybot.techcore.permission.Role.QA;
 
 @Getter
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public enum Command {
     }
 
     private static List<Role> getDeployRoles() {
-        return List.of(OPERATOR, QA, BUSINESS);
+        return List.of(OPERATOR, DEVELOPER, QA, BUSINESS);
     }
 
     private static List<Role> getRestartRoles() {

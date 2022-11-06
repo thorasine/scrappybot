@@ -3,7 +3,7 @@ package io.thorasine.scrappybot.techcore.configuration;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.thorasine.scrappybot.techcore.permissions.Role;
+import io.thorasine.scrappybot.techcore.permission.Role;
 import io.thorasine.scrappybot.techcore.properties.RoleProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLineParser;

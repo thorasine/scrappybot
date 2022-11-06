@@ -6,11 +6,15 @@ import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ConversationReference;
+import io.thorasine.scrappybot.command.Command;
 import io.thorasine.scrappybot.command.CommandService;
+import io.thorasine.scrappybot.command.commandline.CommandLineService;
 import io.thorasine.scrappybot.techcore.error.ExceptionHandler;
 import io.thorasine.scrappybot.techcore.error.exception.SystemRuntimeErrorException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 public class ConversationActivityHandler extends ActivityHandler {
 
     private final CommandService commandService;
+    private final CommandLineService commandLineService;
     private final ExceptionHandler exceptionHandler;
     private final ConversationReferences conversationReferences;
 
@@ -41,7 +46,21 @@ public class ConversationActivityHandler extends ActivityHandler {
         if (args.length == 0) {
             throw new SystemRuntimeErrorException(turnContext, "What?");
         }
-        commandService.invokeFeature(turnContext, args);
+        invokeFeature(turnContext, args);
+    }
+
+    private void invokeFeature(TurnContext turnContext, String[] stringArgs) {
+        CommandLine args;
+        Command command = Command.from(stringArgs[0]);
+        if (null == command) {
+            throw new SystemRuntimeErrorException(turnContext, commandService.getCommandErrorMessage(turnContext));
+        }
+        try {
+            args = commandLineService.parse(command, stringArgs);
+        } catch (ParseException exception) {
+            throw new SystemRuntimeErrorException(turnContext, commandLineService.getCommandErrorHelpMessage(exception, command));
+        }
+        commandService.invokeFeature(turnContext, command, args);
     }
 
     @Override
