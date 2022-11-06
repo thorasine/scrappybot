@@ -2,7 +2,7 @@ package io.thorasine.scrappybot.command.help;
 
 import com.microsoft.bot.builder.TurnContext;
 import io.thorasine.scrappybot.command.commandline.CommandLineService;
-import io.thorasine.scrappybot.command.commandline.enums.Command;
+import io.thorasine.scrappybot.command.Command;
 import io.thorasine.scrappybot.message.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;

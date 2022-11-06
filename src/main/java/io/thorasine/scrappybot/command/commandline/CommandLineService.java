@@ -3,7 +3,7 @@ package io.thorasine.scrappybot.command.commandline;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import io.thorasine.scrappybot.command.commandline.enums.Command;
+import io.thorasine.scrappybot.command.Command;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CommandLineService {
-
-    private static final String DELETE_CARD_COMMAND = "delete card";
 
     private final CommandLineParser commandLineParser;
     private final HelpFormatter helpFormatter;
