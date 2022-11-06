@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CardMakerService {
+public class CardMakerUtil {
 
     public CardAction createDeleteCard() {
         CardAction cardAction = new CardAction();

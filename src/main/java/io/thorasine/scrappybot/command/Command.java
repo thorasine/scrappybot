@@ -90,7 +90,7 @@ public enum Command {
 
     private static Options getReleaseOptions() {
         Options options = new Options();
-        options.addRequiredOption("b", "branch", true, "Branch to create release from.");
+        options.addRequiredOption("r", "reference", true, "Reference branch or tag to create release from.");
         options.addRequiredOption("t", "tag", true, "Tag of the release.");
         options.addOption("a", "abort", false, "Abort current release process.");
         return options;

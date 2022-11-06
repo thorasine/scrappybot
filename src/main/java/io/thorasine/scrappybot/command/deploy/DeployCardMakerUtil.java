@@ -7,13 +7,13 @@ import com.microsoft.bot.schema.ActionTypes;
 import com.microsoft.bot.schema.CardAction;
 import com.microsoft.bot.schema.HeroCard;
 import io.thorasine.scrappybot.techcore.properties.DeployProperties;
-import io.thorasine.scrappybot.utility.CardMakerService;
+import io.thorasine.scrappybot.utility.CardMakerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DeployCardMakerService extends CardMakerService {
+public class DeployCardMakerUtil extends CardMakerUtil {
 
     private final DeployProperties deployProperties;
 

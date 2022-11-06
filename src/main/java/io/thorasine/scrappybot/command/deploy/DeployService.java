@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class DeployService {
 
     private final MessageService messageService;
-    private final DeployCardMakerService cardMakerService;
+    private final DeployCardMakerUtil cardMakerService;
     private static final String TAG_PATTERN = "[0-9]{1,2}\\.[0-9]\\.[0-9]";
 
     public void deploy(TurnContext turnContext, CommandLine args) {

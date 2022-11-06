@@ -6,7 +6,7 @@ import java.util.List;
 import com.microsoft.bot.schema.ActionTypes;
 import com.microsoft.bot.schema.CardAction;
 import com.microsoft.bot.schema.HeroCard;
-import io.thorasine.scrappybot.utility.CardMakerService;
+import io.thorasine.scrappybot.utility.CardMakerUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import static org.springframework.util.StringUtils.capitalize;
 
 @Service
 @RequiredArgsConstructor
-public class RestartCardMakerService extends CardMakerService {
+public class RestartCardMakerUtil extends CardMakerUtil {
 
     public HeroCard createRestartCards() {
         HeroCard card = new HeroCard();

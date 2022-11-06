@@ -24,7 +24,7 @@ public class CommandService {
     private final MessageService messageService;
 
     @Authorize
-    public void invokeFeature(TurnContext turnContext, Command command, CommandLine args) {
+    public void invokeFeature(TurnContext turnContext, Command command, CommandLine args) throws Exception {
         switch (command) {
             case HELLO -> messageService.sendMessage(turnContext, "Hello back!");
             case HELP -> helpService.sendAllCommandsHelpMessage(turnContext, args);

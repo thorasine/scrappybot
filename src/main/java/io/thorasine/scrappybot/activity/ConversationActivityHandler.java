@@ -40,7 +40,7 @@ public class ConversationActivityHandler extends ActivityHandler {
         return super.onMessageActivity(turnContext);
     }
 
-    private void processMessage(TurnContext turnContext) {
+    private void processMessage(TurnContext turnContext) throws Exception {
         String[] args = getArgs(turnContext.getActivity().getText());
         if (args.length == 0) {
             throw new SystemRuntimeErrorException(turnContext, "What?");
@@ -48,7 +48,7 @@ public class ConversationActivityHandler extends ActivityHandler {
         invokeFeature(turnContext, args);
     }
 
-    private void invokeFeature(TurnContext turnContext, String[] stringArgs) {
+    private void invokeFeature(TurnContext turnContext, String[] stringArgs) throws Exception {
         Command command = commandLineService.getCommand(turnContext, stringArgs);
         CommandLine args = commandLineService.getArgs(turnContext, command, stringArgs);
         commandService.invokeFeature(turnContext, command, args);

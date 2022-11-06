@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class RestartService {
 
     private final MessageService messageService;
-    private final RestartCardMakerService cardMakerService;
+    private final RestartCardMakerUtil cardMakerService;
 
     public void restart(TurnContext turnContext, CommandLine args) {
         if (ArrayUtils.isEmpty(args.getOptions())) {
