@@ -57,10 +57,6 @@ public class ConversationActivityHandler extends ActivityHandler {
         if (args.length == 0) {
             throw new SystemRuntimeErrorException(turnContext, "What?");
         }
-        if (turnContext.getActivity().getText().trim().equalsIgnoreCase("delete card")) {
-            messageService.deleteMessage(turnContext);
-            return;
-        }
         invokeFeature(turnContext, args);
     }
 
