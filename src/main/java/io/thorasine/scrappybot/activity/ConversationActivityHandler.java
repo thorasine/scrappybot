@@ -76,10 +76,11 @@ public class ConversationActivityHandler extends ActivityHandler {
             throw new SystemRuntimeErrorException(turnContext, commandLineService.getCommandErrorHelpMessage(exception, command));
         }
         switch (command) {
+            case HELLO -> messageService.sendMessage(turnContext, "Hello back!");
             case HELP -> helpService.getAllCommandsHelp(turnContext, args);
-            case RELEASE -> releaseService.release(turnContext, args);
             case DEPLOY -> deployService.deploy(turnContext, args);
             case RESTART -> restartService.restart(turnContext, args);
+            case RELEASE -> releaseService.release(turnContext, args);
             case DELETE -> messageService.deleteMessage(turnContext);
             case KILL -> killService.kill(turnContext);
         }

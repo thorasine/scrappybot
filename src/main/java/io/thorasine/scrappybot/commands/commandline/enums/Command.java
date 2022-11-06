@@ -8,6 +8,7 @@ import org.apache.commons.cli.Options;
 @RequiredArgsConstructor
 public enum Command {
     HELP("help", getHelpOptions(), false, "Show help menu."),
+    HELLO("hello", getHelloOptions(), true, "Checks if the bot is alive."),
     DEPLOY("deploy", getDeployOptions(), false, "Deploy the selected branch or tag on AWS."),
     RESTART("restart", getRestartOptions(), false, "Restart the selected applications on AWS."),
     RELEASE("release", getReleaseOptions(), false, "Release an app version through One Button Release job."),
@@ -63,6 +64,10 @@ public enum Command {
     }
 
     private static Options getKillOptions() {
+        return new Options();
+    }
+
+    private static Options getHelloOptions() {
         return new Options();
     }
 
