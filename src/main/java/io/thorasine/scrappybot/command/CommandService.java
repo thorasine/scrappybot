@@ -19,8 +19,8 @@ public class CommandService {
 
     private final HelpService helpService;
     private final KillService killService;
-    private final DeployService deployService;
     private final StatusService statusService;
+    private final DeployService deployService;
     private final ReleaseService releaseService;
     private final RestartService restartService;
     private final MessageService messageService;
@@ -30,8 +30,8 @@ public class CommandService {
         switch (command) {
             case HELLO -> messageService.sendMessage(turnContext, "Hello back!");
             case HELP -> helpService.sendAllCommandsHelpMessage(turnContext, args);
-            case DEPLOY -> deployService.deploy(turnContext, args);
             case STATUS -> statusService.status(turnContext, args);
+            case DEPLOY -> deployService.deploy(turnContext, args);
             case RESTART -> restartService.restart(turnContext, args);
             case RELEASE -> releaseService.release(turnContext, args);
             case DELETE -> messageService.deleteMessage(turnContext);

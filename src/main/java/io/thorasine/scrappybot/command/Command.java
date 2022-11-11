@@ -16,9 +16,9 @@ import static io.thorasine.scrappybot.techcore.authorization.Role.QA;
 @RequiredArgsConstructor
 public enum Command {
     HELP("help", getHelpOptions(), getEmptyRoles(), false, "Show help menu."),
+    STATUS("status", getStatusOptions(), getStatusRoles(), false, "Get current status of app services."),
     HELLO("hello", getHelloOptions(), getEmptyRoles(), true, "Checks if the bot is alive."),
     DEPLOY("deploy", getDeployOptions(), getDeployRoles(), false, "Deploy the selected branch or tag on AWS. WIP"),
-    STATUS("status", getStatusOptions(), getStatusRoles(), false, "Get current status of AWS. WIP"),
     RESTART("restart", getRestartOptions(), getRestartRoles(), false, "Restart the selected applications on AWS. WIP"),
     RELEASE("release", getReleaseOptions(), gerReleaseRoles(), false, "Release an app version through One Button Release job."),
     DELETE("delete", getDeleteOptions(), getDeleteRoles(), true, "Deletes message it replies to (for example deploy card on 'Exit'"),
@@ -43,12 +43,12 @@ public enum Command {
         return List.of();
     }
 
-    private static List<Role> getDeployRoles() {
-        return List.of(OPERATOR, DEVELOPER, QA, BUSINESS);
-    }
-
     private static List<Role> getStatusRoles() {
         return List.of();
+    }
+
+    private static List<Role> getDeployRoles() {
+        return List.of(OPERATOR, DEVELOPER, QA, BUSINESS);
     }
 
     private static List<Role> getRestartRoles() {
@@ -73,6 +73,10 @@ public enum Command {
         return options;
     }
 
+    private static Options getStatusOptions() {
+        return new Options();
+    }
+
     private static Options getHelloOptions() {
         return new Options();
     }
@@ -82,10 +86,6 @@ public enum Command {
         options.addOption("r", "reference", true, "Branch or tag to deploy from.");
         options.addOption("a", "abort", false, "Abort current deploy.");
         return options;
-    }
-
-    private static Options getStatusOptions() {
-        return new Options();
     }
 
     private static Options getRestartOptions() {
