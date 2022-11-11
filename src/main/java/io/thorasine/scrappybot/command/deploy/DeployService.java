@@ -18,7 +18,7 @@ public class DeployService {
     private static final String TAG_PATTERN = "[0-9]{1,2}\\.[0-9]\\.[0-9]";
 
     public void deploy(TurnContext turnContext, CommandLine args) {
-        String branch = null;
+        String reference = null;
         if (ArrayUtils.isEmpty(args.getOptions())) {
             HeroCard deployCards = cardMakerService.createDeployCards();
             messageService.sendMessage(turnContext, MessageFactory.attachment(deployCards.toAttachment()));
@@ -28,13 +28,10 @@ public class DeployService {
             messageService.sendMessage(turnContext, "Aborting deploy.");
             return;
         }
-        if (args.hasOption("branch")) {
-            branch = args.getOptionValue("branch");
+        if (args.hasOption("reference")) {
+            reference = args.getOptionValue("reference");
         }
-        if (args.hasOption("tag")) {
-            branch = args.getOptionValue("tag");
-        }
-        String message = "Deploying " + branch + " to AWS.";
+        String message = "Deploying " + reference + " to AWS.";
         messageService.sendMessage(turnContext, message);
     }
 }

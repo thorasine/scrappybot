@@ -26,6 +26,9 @@ public class RestartService {
         if (args.hasOption("lizi")) {
             message += " Lizi";
         }
+        if (args.hasOption("lizi")) {
+            message += " Video office";
+        }
         if (args.hasOption("infra")) {
             message += " Infra";
         }

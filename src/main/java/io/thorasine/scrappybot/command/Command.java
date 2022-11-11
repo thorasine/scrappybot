@@ -74,8 +74,7 @@ public enum Command {
 
     private static Options getDeployOptions() {
         Options options = new Options();
-        options.addOption("b", "branch", true, "Branch (or tag) to deploy from.");
-        options.addOption("t", "tag", true, "Tag to deploy from.");
+        options.addOption("r", "reference", true, "Branch or tag to deploy from.");
         options.addOption("a", "abort", false, "Abort current deploy.");
         return options;
     }
@@ -83,6 +82,7 @@ public enum Command {
     private static Options getRestartOptions() {
         Options options = new Options();
         options.addOption("l", "lizi", false, "Restart lizi service.");
+        options.addOption("v", "video-office", false, "Restart video office service.");
         options.addOption("i", "infra", false, "Restart the infra: db / clamav / maildev.");
         options.addOption("b", "bot", false, "Restart the bot.");
         return options;
