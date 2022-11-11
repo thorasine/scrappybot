@@ -17,8 +17,9 @@ import static io.thorasine.scrappybot.techcore.authorization.Role.QA;
 public enum Command {
     HELP("help", getHelpOptions(), getEmptyRoles(), false, "Show help menu."),
     HELLO("hello", getHelloOptions(), getEmptyRoles(), true, "Checks if the bot is alive."),
-    DEPLOY("deploy", getDeployOptions(), getDeployRoles(), false, "Deploy the selected branch or tag on AWS."),
-    RESTART("restart", getRestartOptions(), getRestartRoles(), false, "Restart the selected applications on AWS."),
+    DEPLOY("deploy", getDeployOptions(), getDeployRoles(), false, "Deploy the selected branch or tag on AWS. WIP"),
+    STATUS("status", getStatusOptions(), getStatusRoles(), false, "Get current status of AWS. WIP"),
+    RESTART("restart", getRestartOptions(), getRestartRoles(), false, "Restart the selected applications on AWS. WIP"),
     RELEASE("release", getReleaseOptions(), gerReleaseRoles(), false, "Release an app version through One Button Release job."),
     DELETE("delete", getDeleteOptions(), getDeleteRoles(), true, "Deletes message it replies to (for example deploy card on 'Exit'"),
     KILL("kill", getKillOptions(), getKillRoles(), true, "This kills the bot.");
@@ -44,6 +45,10 @@ public enum Command {
 
     private static List<Role> getDeployRoles() {
         return List.of(OPERATOR, DEVELOPER, QA, BUSINESS);
+    }
+
+    private static List<Role> getStatusRoles() {
+        return List.of();
     }
 
     private static List<Role> getRestartRoles() {
@@ -79,11 +84,15 @@ public enum Command {
         return options;
     }
 
+    private static Options getStatusOptions() {
+        return new Options();
+    }
+
     private static Options getRestartOptions() {
         Options options = new Options();
         options.addOption("l", "lizi", false, "Restart lizi service.");
         options.addOption("v", "video-office", false, "Restart video office service.");
-        options.addOption("i", "infra", false, "Restart the infra: db / clamav / maildev.");
+        options.addOption("i", "infra", false, "Restart the infrastructure: db / clamav / maildev.");
         options.addOption("b", "bot", false, "Restart the bot.");
         return options;
     }

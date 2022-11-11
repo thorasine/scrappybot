@@ -27,10 +27,10 @@ public class RestartService {
             message += " Lizi";
         }
         if (args.hasOption("lizi")) {
-            message += " Video office";
+            message += " Video-office";
         }
         if (args.hasOption("infra")) {
-            message += " Infra";
+            message += " Infrastructure";
         }
         if (args.hasOption("bot")) {
             message += " Bot";
