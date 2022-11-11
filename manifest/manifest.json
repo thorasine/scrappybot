@@ -22,7 +22,7 @@
     "short": "$BOT_NAME",
     "full": "$BOT_NAME"
   },
-  "accentColor": "#FFFFFF",
+  "accentColor": "#0077db",
   "bots": [
     {
       "botId": "$CLIENT_ID",
