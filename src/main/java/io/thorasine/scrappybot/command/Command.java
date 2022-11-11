@@ -16,10 +16,10 @@ import static io.thorasine.scrappybot.techcore.authorization.Role.QA;
 @RequiredArgsConstructor
 public enum Command {
     HELP("help", getHelpOptions(), getEmptyRoles(), false, "Show help menu."),
-    STATUS("status", getStatusOptions(), getStatusRoles(), false, "Get current status of app services."),
     HELLO("hello", getHelloOptions(), getEmptyRoles(), true, "Checks if the bot is alive."),
-    DEPLOY("deploy", getDeployOptions(), getDeployRoles(), false, "Deploy the selected branch or tag on AWS. WIP"),
-    RESTART("restart", getRestartOptions(), getRestartRoles(), false, "Restart the selected applications on AWS. WIP"),
+    STATUS("status", getStatusOptions(), getStatusRoles(), false, "Get current status of app services."),
+    DEPLOY("deploy", getDeployOptions(), getDeployRoles(), false, "WIP - Deploy the selected branch or tag on AWS."),
+    RESTART("restart", getRestartOptions(), getRestartRoles(), false, "WIP - Restart the selected applications on AWS."),
     RELEASE("release", getReleaseOptions(), gerReleaseRoles(), false, "Release an app version through One Button Release job."),
     DELETE("delete", getDeleteOptions(), getDeleteRoles(), true, "Deletes message it replies to (for example deploy card on 'Exit'"),
     KILL("kill", getKillOptions(), getKillRoles(), true, "This kills the bot.");
