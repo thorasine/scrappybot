@@ -5,9 +5,11 @@ import io.thorasine.scrappybot.command.status.dto.StatusDTO;
 import io.thorasine.scrappybot.message.MessageService;
 import io.thorasine.scrappybot.techcore.properties.StatusProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StatusService {
@@ -30,6 +32,7 @@ public class StatusService {
         try {
             status = statusRequestService.getStatus(service.getAddress());
         } catch (Exception e) {
+            log.info("Failed to get status of service: {} with address: {}", service.getName(), service.getAddress());
             e.printStackTrace();
         }
         status.setServiceName(service.getName());
