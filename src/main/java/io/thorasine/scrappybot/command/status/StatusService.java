@@ -20,7 +20,7 @@ public class StatusService {
         StringBuilder sb = new StringBuilder();
         for (StatusProperties.Service service : statusProperties.getServices()) {
             StatusDTO statusDTO = getStatusOfService(service);
-            sb.append(statusDTO.getServiceName()).append(" - ").append(statusDTO.getStatus().toLowerCase()).append("\n\n");
+            sb.append(statusDTO.getServiceName()).append(" - ").append(statusDTO.getStatus()).append("\n\n");
         }
         messageService.sendMessage(turnContext, sb.toString());
     }
