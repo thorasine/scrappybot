@@ -13,6 +13,6 @@ public class ProactiveMessageController {
 
     @GetMapping("/api/notify")
     public void sendMessageToEveryInteractiveUser() {
-        messageService.sendMessageToEveryInteractiveUser("Proactive message");
+        messageService.sendGroupMessage("Proactive message");
     }
 }

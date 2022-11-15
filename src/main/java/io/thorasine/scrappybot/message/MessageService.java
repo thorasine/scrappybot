@@ -8,7 +8,6 @@ import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.Configuration;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ConversationReference;
-import io.thorasine.scrappybot.activity.ConversationReferences;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ public class MessageService {
 
     private final Configuration configuration;
     private final BotFrameworkHttpAdapter adapter;
-    private final ConversationReferences conversationReferences;
+    private final ConversationReference kavoszDailyConversation;
     private String APP_ID;
 
     @PostConstruct
@@ -39,17 +38,7 @@ public class MessageService {
     }
 
     public void sendGroupMessage(Activity activity) {
-        for (ConversationReference reference : conversationReferences.values()) {
-            if (reference.getConversation().isGroup()) {
-                sendMessage(reference, activity);
-            }
-        }
-    }
-
-    public void sendMessageToEveryInteractiveUser(String message) {
-        for (ConversationReference reference : conversationReferences.values()) {
-            sendMessage(reference, MessageFactory.text(message));
-        }
+        sendMessage(kavoszDailyConversation, activity);
     }
 
     public void deleteMessage(TurnContext turnContext) {
